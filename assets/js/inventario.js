@@ -112,7 +112,6 @@ document.getElementById('mov-guardar').addEventListener('click', async () => {
 });
 
 async function init() {
-  await Layout.mount('inventario');
-  await cargar();
+  await Promise.all([Layout.mount('inventario'), cargar()]);
 }
 init();

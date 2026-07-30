@@ -1,4 +1,4 @@
-const CANALES = [{ key: null, label: 'Todos' }, { key: 'mesa', label: 'Salón' }, { key: 'para_llevar', label: 'Para llevar' }, { key: 'domicilio', label: 'Domicilio' }];
+const CANALES = [{ key: null, label: 'Todos' }, { key: 'mesa', label: 'Local' }, { key: 'para_llevar', label: 'Para llevar' }, { key: 'domicilio', label: 'Domicilio' }];
 let canalActivo = null;
 
 function renderCanalPills() {
@@ -49,9 +49,8 @@ async function cargar() {
 document.getElementById('f-fecha').addEventListener('change', cargar);
 
 async function init() {
-  await Layout.mount('reportes');
   document.getElementById('f-fecha').value = new Date().toISOString().slice(0, 10);
   renderCanalPills();
-  await cargar();
+  await Promise.all([Layout.mount('reportes'), cargar()]);
 }
 init();

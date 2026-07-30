@@ -3,7 +3,8 @@
    Tokens tomados 1:1 del diseño de referencia (Claude Design, Manrope, oklch)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+/* La fuente Manrope se carga desde <link> en el <head> de cada página
+   (más rápido que @import, que bloquea el render mientras se resuelve). */
 
 :root {
   --bg:            oklch(96% 0.015 70);

@@ -83,8 +83,6 @@ async function cargarPermisos() {
 }
 
 async function init() {
-  await Layout.mount('usuarios');
-  await cargarUsuarios();
-  await cargarPermisos();
+  await Promise.all([Layout.mount('usuarios'), cargarUsuarios(), cargarPermisos()]);
 }
 init();

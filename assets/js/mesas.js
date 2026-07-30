@@ -62,4 +62,4 @@ document.getElementById('btn-domicilio').addEventListener('click', () => {
   window.location.href = 'domicilio.html?nuevo=1';
 });
 
-Layout.mount('mesas').then(() => loadZonas());
+Promise.all([Layout.mount('mesas'), loadZonas()]);

@@ -5,7 +5,7 @@
  * y llama a Layout.mount('mesas') indicando su propio módulo activo.
  */
 const MODULOS = [
-  { key: 'mesas',      label: 'Salón',        href: 'mesas.html' },
+  { key: 'mesas',      label: 'Local',        href: 'mesas.html' },
   { key: 'pedidos',    label: 'Pedidos',      href: 'pedido.html' },
   { key: 'domicilios', label: 'Domicilios',   href: 'domicilio.html' },
   { key: 'cocina',     label: 'Cocina',       href: 'cocina.html', modulo: 'pedidos' },

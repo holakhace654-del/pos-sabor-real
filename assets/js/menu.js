@@ -216,11 +216,13 @@ async function cargarProductos() {
 }
 
 async function init() {
-  await Layout.mount('menu');
-  const catRes = await Api.get('/api/categorias.php?action=listar');
+  const [, catRes] = await Promise.all([
+    Layout.mount('menu'),
+    Api.get('/api/categorias.php?action=listar'),
+    cargarProductos(),
+  ]);
   categorias = catRes.categorias;
   renderCatPills();
-  await cargarProductos();
   renderEditPanel();
 }
 

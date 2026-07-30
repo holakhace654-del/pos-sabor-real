@@ -164,14 +164,14 @@ document.getElementById('btn-crear').addEventListener('click', async () => {
 });
 
 async function init() {
-  await Layout.mount('domicilios');
-  const [zRes, cRes] = await Promise.all([
+  const [, zRes, cRes] = await Promise.all([
+    Layout.mount('domicilios'),
     Api.get('/api/domicilios.php?action=zonas'),
     Api.get('/api/domicilios.php?action=domiciliarios'),
+    loadDomicilios(),
   ]);
   zonas = zRes.zonas;
   domiciliarios = cRes.domiciliarios;
-  await loadDomicilios();
 
   if (new URLSearchParams(location.search).get('nuevo')) openModal();
   setInterval(loadDomicilios, 8000);

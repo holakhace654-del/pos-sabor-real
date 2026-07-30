@@ -14,7 +14,7 @@ function renderTurnoHome(turno) {
         ${turno ? `
           <div style="font:800 15px 'Manrope',sans-serif">Turno abierto</div>
           <div style="font:600 12px 'Manrope',sans-serif;color:var(--text-dim)">Abierto por ${turno.usuario_nombre} · base ${formatCOP(turno.base_inicial)}</div>
-          <div style="font:600 12px 'Manrope',sans-serif;color:var(--text-dim)">Para cobrar un pedido, ábrelo desde el Salón o Domicilios y usa "Cobrar".</div>
+          <div style="font:600 12px 'Manrope',sans-serif;color:var(--text-dim)">Para cobrar un pedido, ábrelo desde Local o Domicilios y usa "Cobrar".</div>
           <input class="input" id="f-contado" placeholder="Efectivo contado al cierre">
           <button class="btn btn-primary" id="btn-cerrar">Cerrar caja con arqueo</button>
         ` : `
@@ -215,13 +215,14 @@ async function cargarInicio() {
 }
 
 async function init() {
-  await Layout.mount('caja');
+  const mount = Layout.mount('caja');
   if (pedidoId) {
     const res = await Api.get(`/api/pedidos.php?action=detalle&id=${pedidoId}`);
     pedido = res.pedido;
     renderCobro();
+    await mount;
   } else {
-    cargarInicio();
+    await Promise.all([mount, cargarInicio()]);
   }
 }
 

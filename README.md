@@ -6,7 +6,7 @@ HTML/CSS/JS sin build en el frontend. Pensado para hosting compartido (Hostinger
 ## Pantallas
 
 1. Login por PIN (`index.html`)
-2. Salón / mapa de mesas (`mesas.html`)
+2. Local / mapa de mesas (`mesas.html`)
 3. Toma de pedido — mesa, para llevar, domicilio (`pedido.html`)
 4. Domicilios + vista del domiciliario (`domicilio.html`, `domiciliario.html`)
 5. Cocina / KDS con polling (`cocina.html`)

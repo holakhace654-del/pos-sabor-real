@@ -214,9 +214,12 @@ document.getElementById('btn-notas').addEventListener('click', async () => {
 });
 
 async function init() {
-  if (!pedidoId) { toast('Pedido inválido.'); return; }
-  await Layout.mount('pedidos');
-  const [menuRes, catRes, pedRes] = await Promise.all([
+  if (!pedidoId) {
+    window.location.href = 'mesas.html';
+    return;
+  }
+  const [, menuRes, catRes, pedRes] = await Promise.all([
+    Layout.mount('pedidos'),
     Api.get('/api/productos.php?action=menu'),
     Api.get('/api/categorias.php?action=listar'),
     Api.get(`/api/pedidos.php?action=detalle&id=${pedidoId}`),
@@ -224,6 +227,13 @@ async function init() {
   productos = menuRes.productos;
   categorias = catRes.categorias;
   pedido = pedRes.pedido;
+
+  if (!pedido) {
+    toast('Ese pedido no existe.');
+    window.location.href = 'mesas.html';
+    return;
+  }
+
   categoriaActiva = categorias[0]?.id ?? null;
   renderCats();
   renderGrid();
