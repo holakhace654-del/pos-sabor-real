@@ -125,4 +125,8 @@ foreach ($pines as $iniciales => $pin) {
     echo "PIN de $iniciales fijado a $pin\n";
 }
 
-echo "\nListo. Elimina install.php del servidor por seguridad.\n";
+if (@unlink(__FILE__)) {
+    echo "\nListo. Este instalador se autoeliminó del servidor por seguridad.\n";
+} else {
+    echo "\nListo. No pude autoeliminarme (permisos de archivo) — borra install.php manualmente desde el Administrador de archivos.\n";
+}
