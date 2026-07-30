@@ -1,11 +1,30 @@
 <?php
-// Configuración central. En Hostinger: crea la base de datos desde hPanel
-// y reemplaza estos valores con los que te entregue el panel.
+// Configuración central.
+//
+// Las credenciales reales de la base de datos NO se guardan aquí porque este
+// archivo se sube a un repositorio público en GitHub. En su lugar, viven en
+// config/local.php, un archivo que solo existe en el servidor (Hostinger) y
+// que está en .gitignore, así que nunca se sube ni queda visible para nadie.
+//
+// Para producción (Hostinger): crea config/local.php directamente en el
+// Administrador de archivos del panel, con este contenido (con tus datos
+// reales de hPanel → Base de datos):
+//
+//   <?php
+//   define('DB_HOST', 'localhost');
+//   define('DB_NAME', 'u252316858_sabor_real_pos');
+//   define('DB_USER', 'u252316858_sabor_real');
+//   define('DB_PASS', 'tu-contraseña-real');
+//
+if (file_exists(__DIR__ . '/local.php')) {
+    require __DIR__ . '/local.php';
+}
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'sabor_real_pos');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Valores por defecto para desarrollo local (XAMPP, etc.) si no existe local.php
+if (!defined('DB_HOST')) define('DB_HOST', 'localhost');
+if (!defined('DB_NAME')) define('DB_NAME', 'sabor_real_pos');
+if (!defined('DB_USER')) define('DB_USER', 'root');
+if (!defined('DB_PASS')) define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
 define('APP_NAME', 'Sabor Real');
