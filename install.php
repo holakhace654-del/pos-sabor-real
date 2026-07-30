@@ -81,6 +81,12 @@ if (!file_exists($localPath)) {
         if (file_put_contents($localPath, $php) === false) {
             render_form('No se pudo escribir config/local.php. Revisa los permisos de la carpeta config/.');
         }
+
+        // config.php ya se cargó en este request con los valores por defecto
+        // (require_once no lo vuelve a leer), así que redirigimos para que la
+        // siguiente petición arranque limpia y sí recoja config/local.php.
+        header('Location: install.php');
+        exit;
     } else {
         render_form();
     }
