@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salón · Sabor Real</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .toolbar { display: flex; gap: 10px; }
+  .legend { display: flex; gap: 14px; flex-wrap: wrap; }
+  .zone-title { font: 700 11px ui-monospace, monospace; color: var(--text-dim); text-transform: uppercase; margin-top: 6px; }
+  .tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .table-card {
+    border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px;
+    border: 1px solid var(--border); cursor: pointer; transition: transform .12s;
+  }
+  .table-card:active { transform: scale(0.97); }
+  .table-head { display: flex; justify-content: space-between; }
+  .table-name { font: 800 15px 'Manrope', sans-serif; }
+  .table-seats { font: 600 10px ui-monospace, monospace; }
+  .table-meta { font: 600 10px ui-monospace, monospace; color: var(--text-dim); }
+  .quick-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 520px; }
+  .quick-card { border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; border: none; text-align: left; }
+  .quick-card .qc-title { font: 800 14px 'Manrope', sans-serif; }
+  .quick-card .qc-sub { font: 600 10px ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <div id="sidebar-root"></div>
+  <div class="main">
+    <div class="main-header">
+      <div class="main-title">Salón</div>
+      <div class="toolbar">
+        <button class="btn btn-ghost" id="btn-para-llevar">Para llevar</button>
+        <button class="btn btn-primary" id="btn-domicilio">+ Domicilio</button>
+      </div>
+    </div>
+
+    <div class="quick-cards">
+      <button class="quick-card" style="background:var(--accent-soft)" onclick="location.href='pedido.html'">
+        <div class="qc-title" style="color:var(--accent-soft-tx)">Para llevar</div>
+        <div class="qc-sub" id="qc-para-llevar" style="color:var(--accent-soft-tx)">0 pedidos activos</div>
+      </button>
+      <button class="quick-card" style="background:var(--ok-bg)" onclick="location.href='domicilio.html'">
+        <div class="qc-title" style="color:var(--ok-text)">Domicilios</div>
+        <div class="qc-sub" id="qc-domicilios" style="color:var(--ok-text)">0 en curso</div>
+      </button>
+    </div>
+
+    <div class="legend">
+      <div class="pill pill-libre">Libre</div>
+      <div class="pill pill-ocupada">Ocupada</div>
+      <div class="pill pill-cuenta">Cuenta pedida</div>
+      <div class="pill pill-reservada">Reservada</div>
+    </div>
+
+    <div id="zonas"></div>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/mesas.js"></script>
+</body>
+</html>

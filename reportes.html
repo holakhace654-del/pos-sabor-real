@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reportes · Sabor Real</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .kpi-card { border-radius: 16px; padding: 16px; background: var(--row-bg); border: 1px solid var(--border); }
+  .kpi-label { font: 600 10.5px ui-monospace, monospace; color: var(--text-dim); text-transform: uppercase; }
+  .kpi-value { font: 800 20px 'Manrope', sans-serif; margin-top: 6px; }
+  .charts-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .chart-card { flex: 1; min-width: 260px; border-radius: 16px; border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .bars { display: flex; align-items: flex-end; gap: 6px; height: 110px; }
+  .bar { flex: 1; background: oklch(64% 0.19 40 / 0.75); border-radius: 6px 6px 0 0; min-height: 2px; }
+  .top-row { display: flex; justify-content: space-between; font: 600 11.5px 'Manrope', sans-serif; }
+  .staff-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid oklch(94% 0.01 60); font: 600 11.5px 'Manrope', sans-serif; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <div id="sidebar-root"></div>
+  <div class="main">
+    <div class="main-header">
+      <div class="main-title">Reportes</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="input" type="date" id="f-fecha" style="width:150px">
+        <div id="canal-pills" style="display:flex;gap:8px"></div>
+      </div>
+    </div>
+    <div class="kpi-grid" id="kpis"></div>
+    <div class="charts-row">
+      <div class="chart-card">
+        <div style="font:700 12.5px 'Manrope',sans-serif">Ventas por hora</div>
+        <div class="bars" id="bars"></div>
+      </div>
+      <div class="chart-card">
+        <div style="font:700 12.5px 'Manrope',sans-serif">Más vendidos</div>
+        <div id="top-productos"></div>
+      </div>
+      <div class="chart-card" id="cierre-caja"></div>
+    </div>
+    <div class="chart-card">
+      <div style="font:700 12.5px 'Manrope',sans-serif">Desempeño por mesero y domiciliario</div>
+      <div id="staff"></div>
+    </div>
+  </div>
+</div>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/reportes.js"></script>
+</body>
+</html>

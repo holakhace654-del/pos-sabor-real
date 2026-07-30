@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caja · Sabor Real</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .caja-shell { display: flex; flex: 1; min-width: 0; }
+  .cuenta-panel { flex: 1.4; padding: 20px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid var(--border); min-width: 0; }
+  .pay-panel { width: 360px; flex: none; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: var(--panel-bg); }
+  .linea-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid oklch(93% 0.01 60); }
+  .linea-item .ph-photo { width: 44px; height: 44px; border-radius: 10px; flex: none; }
+  .split-btns { display: flex; gap: 8px; margin-top: 8px; }
+  .split-btns .btn { flex: 1; }
+  .method-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .method-tab { text-align: center; padding: 12px; border-radius: 100px; background: var(--ghost-bg); cursor: pointer; font: 700 11px 'Manrope', sans-serif; }
+  .method-tab.active { background: var(--accent); color: #fff; }
+  .bills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .bill { border-radius: 10px; padding: 10px 4px; text-align: center; border: 3px solid var(--border); cursor: pointer; user-select: none; position: relative; background: var(--accent-soft); }
+  .bill.selected { background: var(--accent); border-color: oklch(45% 0.15 40); }
+  .bill .bill-label { font: 800 12px 'Manrope', sans-serif; }
+  .bill-check { position: absolute; top: 4px; right: 4px; width: 16px; height: 16px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; }
+  .bill-exact { border-radius: 10px; padding: 10px 4px; text-align: center; background: var(--ghost-bg); border: 3px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font: 800 11px 'Manrope', sans-serif; }
+  .recibido-row { display: flex; justify-content: space-between; font: 700 13px 'Manrope', sans-serif; padding-top: 6px; border-top: 1px dashed var(--border-dash); }
+  .cambio-box { border-radius: 14px; padding: 14px; text-align: center; }
+  .cambio-label { font: 600 10.5px ui-monospace, monospace; }
+  .cambio-value { font: 800 26px 'Manrope', sans-serif; }
+  .turno-card { max-width: 420px; padding: 24px; display: flex; flex-direction: column; gap: 14px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <div id="sidebar-root"></div>
+  <div id="content" style="flex:1;display:flex;min-width:0"></div>
+</div>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/caja.js"></script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+/* ==========================================================================
+   Sabor Real POS — hoja de estilos base
+   Tokens tomados 1:1 del diseño de referencia (Claude Design, Manrope, oklch)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg:            oklch(96% 0.015 70);
+  --text:          oklch(23% 0.02 50);
+  --text-dim:      oklch(50% 0.02 50);
+  --text-dim2:     oklch(45% 0.03 50);
+  --border:        oklch(89% 0.02 60);
+  --border-dash:   oklch(85% 0.02 60);
+  --card-bg:       oklch(99% 0.005 70);
+  --ghost-bg:      oklch(94% 0.02 60);
+  --ghost-text:    oklch(30% 0.02 50);
+  --panel-bg:      oklch(96% 0.01 60);
+  --row-bg:        oklch(97% 0.01 60);
+
+  --accent:        oklch(64% 0.19 40);
+  --accent-text:   #fff;
+  --accent-soft:   oklch(93% 0.05 45);
+  --accent-soft-tx:oklch(45% 0.16 40);
+
+  --ok-bg:         oklch(93% 0.04 145);
+  --ok-text:       oklch(35% 0.1 145);
+  --ok-border:     oklch(85% 0.05 145);
+  --ok-solid:      oklch(58% 0.13 145);
+
+  --danger-bg:     oklch(93% 0.05 25);
+  --danger-text:   oklch(42% 0.15 25);
+  --danger-border: oklch(85% 0.06 25);
+  --danger-solid:  oklch(55% 0.18 25);
+
+  --warn-bg:       oklch(94% 0.05 85);
+  --warn-text:     oklch(42% 0.12 85);
+  --warn-border:   oklch(85% 0.06 85);
+
+  --neutral-bg:    oklch(92% 0.03 70);
+  --neutral-text:  oklch(42% 0.05 70);
+  --neutral-border:oklch(85% 0.03 70);
+
+  --kitchen-bg:    oklch(20% 0.015 50);
+  --kitchen-card:  oklch(27% 0.02 50);
+  --kitchen-mesa:  oklch(78% 0.14 85);
+  --kitchen-llevar:oklch(65% 0.19 40);
+  --kitchen-domi:  oklch(60% 0.13 145);
+
+  --radius-lg: 20px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --shadow-card: 0 2px 10px oklch(23% 0.02 50 / 0.06);
+  --shadow-pop:  0 12px 30px oklch(23% 0.02 50 / 0.18);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input, select, textarea { font-family: inherit; }
+
+/* ---- layout general ---- */
+.app-shell { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 200px;
+  flex: none;
+  background: var(--text);
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sidebar .brand {
+  color: #fff;
+  font: 800 16px 'Manrope', sans-serif;
+  margin-bottom: 16px;
+  padding: 0 10px;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font: 600 13px 'Manrope', sans-serif;
+  color: oklch(75% 0.02 60);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.sidebar-item:hover { background: oklch(64% 0.19 40 / 0.12); color: #fff; }
+.sidebar-item.active { background: oklch(64% 0.19 40 / 0.22); color: #fff; }
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px 10px 0;
+  border-top: 1px solid oklch(100% 0 0 / 0.08);
+  color: oklch(70% 0.02 60);
+  font: 600 11px 'Manrope', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.main { flex: 1; padding: 22px 26px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.main-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.main-title { font: 800 20px 'Manrope', sans-serif; }
+
+/* ---- componentes ---- */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 11px ui-monospace, Menlo, monospace;
+  padding: 5px 11px;
+  border-radius: 100px;
+  background: var(--ghost-bg);
+  color: var(--ghost-text);
+  white-space: nowrap;
+}
+.pill.pill-lg { font: 700 12.5px 'Manrope', sans-serif; padding: 9px 16px; }
+
+.anno {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 10px ui-monospace, monospace;
+  padding: 4px 9px;
+  border-radius: 100px;
+  background: var(--text);
+  color: #fff;
+}
+.anno::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: oklch(78% 0.14 85); }
+
+.btn {
+  border: none;
+  border-radius: 14px;
+  font: 700 13px 'Manrope', sans-serif;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: transform .1s ease, filter .1s ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover:not(:disabled) { filter: brightness(1.05); }
+.btn-ghost { background: var(--ghost-bg); color: var(--ghost-text); border: 1px solid var(--border); }
+.btn-ghost:hover:not(:disabled) { background: var(--border); }
+.btn-block { width: 100%; }
+
+.input {
+  padding: 11px 13px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font: 600 13px 'Manrope', sans-serif;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.ph-photo {
+  background: repeating-linear-gradient(135deg, oklch(93% 0.03 55) 0px, oklch(93% 0.03 55) 8px, oklch(97% 0.015 55) 8px, oklch(97% 0.015 55) 16px);
+  display: flex; align-items: center; justify-content: center;
+  color: oklch(55% 0.03 55); font: 600 10px ui-monospace, monospace; text-align: center; padding: 6px;
+  background-size: cover; background-position: center;
+}
+
+.modal-backdrop {
+  position: fixed; inset: 0; background: oklch(23% 0.02 50 / 0.35);
+  display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.form-card { width: 480px; max-width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.user-avatar {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft);
+  display: flex; align-items: center; justify-content: center; flex: none;
+  font: 700 14px 'Manrope', sans-serif; color: var(--accent-soft-tx);
+}
+
+.status-libre     { background: oklch(96% 0.02 145); border-color: var(--ok-border); }
+.status-ocupada   { background: oklch(96% 0.025 25); border-color: var(--danger-border); }
+.status-cuenta    { background: oklch(96% 0.025 85); border-color: var(--warn-border); }
+.status-reservada { background: var(--bg); border-color: var(--neutral-border); }
+
+.pill-libre     { background: var(--ok-bg); color: var(--ok-text); }
+.pill-ocupada   { background: var(--danger-bg); color: var(--danger-text); }
+.pill-cuenta    { background: var(--warn-bg); color: var(--warn-text); }
+.pill-reservada { background: var(--neutral-bg); color: var(--neutral-text); }
+
+/* ---- utilidades de animación ---- */
+@keyframes bump { 0% { transform: scale(1); } 50% { transform: scale(1.22); } 100% { transform: scale(1); } }
+.bump { animation: bump .22s ease; }
+
+@keyframes pop-in { from { opacity: 0; transform: scale(.9) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.pop-in { animation: pop-in .18s ease; }
+
+@keyframes fly-fade { from { opacity: 1; transform: translate(0,0) scale(1); } to { opacity: 0; transform: translate(var(--fx,60px), var(--fy,-40px)) scale(.3); } }
+
+@keyframes draw-check {
+  from { stroke-dashoffset: 40; }
+  to { stroke-dashoffset: 0; }
+}
+
+.toast {
+  position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+  background: var(--text); color: #fff; padding: 12px 20px; border-radius: 14px;
+  font: 700 13px 'Manrope', sans-serif; box-shadow: var(--shadow-pop); z-index: 999;
+  animation: pop-in .18s ease;
+}
+
+.spinner {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 3px solid var(--border); border-top-color: var(--accent);
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- scroll / responsive ---- */
+.scroll-x { overflow-x: auto; }
+.scroll-y { overflow-y: auto; }
+
+@media (max-width: 900px) {
+  .sidebar { width: 64px; padding: 16px 8px; }
+  .sidebar .brand, .sidebar-item span.label, .sidebar-footer { display: none; }
+  .sidebar-item { justify-content: center; padding: 12px; }
+  .main { padding: 14px; }
+}

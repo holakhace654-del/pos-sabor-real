@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mis entregas · Sabor Real</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  body { background: var(--bg); }
+  .mobile-shell { max-width: 480px; margin: 0 auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 100vh; }
+  .m-header { display: flex; justify-content: space-between; align-items: center; }
+  .entrega-card { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .entrega-top { display: flex; justify-content: space-between; align-items: center; }
+  .entrega-actions { display: flex; gap: 8px; margin-top: 4px; }
+  .logout-link { font: 600 11px 'Manrope', sans-serif; color: var(--text-dim); text-decoration: underline; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="mobile-shell">
+  <div class="m-header">
+    <div style="font:800 15px 'Manrope',sans-serif">Mis entregas</div>
+    <div class="pill" id="count-pill" style="background:var(--accent);color:#fff">0 activas</div>
+  </div>
+  <div style="display:flex;justify-content:flex-end"><span class="logout-link" id="btn-logout">Cerrar sesión</span></div>
+  <div id="entregas"></div>
+</div>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/domiciliario.js"></script>
+</body>
+</html>

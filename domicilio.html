@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Domicilios · Sabor Real</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .steps { display: flex; align-items: center; gap: 0; }
+  .step { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+  .step-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 800 10px ui-monospace, monospace; }
+  .step-label { font: 600 8.5px ui-monospace, monospace; color: var(--text-dim); text-align: center; width: 70px; }
+
+  .domi-list { display: flex; flex-direction: column; gap: 12px; }
+  .domi-card { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .domi-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .domi-info { font: 500 11.5px 'Manrope', sans-serif; color: var(--text-dim); }
+  .domi-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .modal-backdrop { position: fixed; inset: 0; background: oklch(23% 0.02 50 / 0.35); display: none; align-items: center; justify-content: center; z-index: 50; padding: 20px; }
+  .modal-backdrop.open { display: flex; }
+  .form-card { width: 640px; max-width: 100%; max-height: 90vh; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .zone-pills, .courier-list { display: flex; gap: 8px; flex-wrap: wrap; }
+  .zone-pill { padding: 9px 14px; border-radius: 100px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; background: var(--ghost-bg); }
+  .zone-pill.selected { background: var(--accent); color: #fff; }
+  .courier-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); cursor: pointer; }
+  .courier-row.selected { border-color: var(--accent); background: var(--accent-soft); }
+  .found-client { border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; background: var(--panel-bg); display: none; flex-direction: column; gap: 4px; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <div id="sidebar-root"></div>
+  <div class="main">
+    <div class="main-header">
+      <div class="main-title">Domicilios</div>
+      <button class="btn btn-primary" id="btn-nuevo">+ Nuevo domicilio</button>
+    </div>
+    <div class="domi-list" id="domi-list"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="card form-card pop-in">
+    <div style="font:800 16px 'Manrope',sans-serif">Nuevo domicilio</div>
+    <div style="display:flex;gap:8px">
+      <input class="input" id="f-buscar-tel" placeholder="Buscar cliente por teléfono">
+      <button class="btn btn-ghost" id="btn-buscar">Buscar</button>
+    </div>
+    <div class="found-client" id="found-client"></div>
+    <div class="form-row">
+      <input class="input" id="f-nombre" placeholder="Nombre">
+      <input class="input" id="f-telefono" placeholder="Teléfono">
+    </div>
+    <input class="input" id="f-direccion" placeholder="Dirección">
+    <input class="input" id="f-referencia" placeholder="Punto de referencia / notas de entrega">
+    <div style="font:700 11px 'Manrope',sans-serif;color:var(--text-dim)">Costo de domicilio por zona</div>
+    <div class="zone-pills" id="zone-pills"></div>
+    <div style="font:700 11px 'Manrope',sans-serif;color:var(--text-dim)">Asignar domiciliario</div>
+    <div class="courier-list" id="courier-list"></div>
+    <div style="display:flex;gap:10px;margin-top:6px">
+      <button class="btn btn-ghost" id="btn-cancelar" style="flex:1">Cancelar</button>
+      <button class="btn btn-primary" id="btn-crear" style="flex:2">Crear e ir al pedido</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/domicilio.js"></script>
+</body>
+</html>

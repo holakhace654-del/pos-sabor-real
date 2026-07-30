@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cocina · Sabor Real</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  body { background: var(--kitchen-bg); }
+  .kds-shell { padding: 22px; display: flex; flex-direction: column; gap: 16px; min-height: 100vh; }
+  .kds-header { display: flex; justify-content: space-between; align-items: center; }
+  .kds-header .title { color: #fff; font: 800 18px 'Manrope', sans-serif; }
+  .kds-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+  .kds-col-title { font: 800 13px ui-monospace, monospace; text-transform: uppercase; }
+  .kds-col { display: flex; flex-direction: column; gap: 14px; }
+  .ticket { background: var(--kitchen-card); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; }
+  .ticket-head { padding: 16px 18px 10px; display: flex; justify-content: space-between; align-items: center; }
+  .ticket-ref { padding: 0 18px 12px; color: #fff; font: 800 22px 'Manrope', sans-serif; }
+  .ticket-item { padding: 0 18px; color: #fff; font: 700 16px 'Manrope', sans-serif; margin-bottom: 6px; }
+  .ticket-btn { margin-top: 10px; border: none; padding: 20px; font: 800 15px 'Manrope', sans-serif; color: #fff; cursor: pointer; width: 100%; }
+  .ticket-static { margin-top: 10px; padding: 20px; font: 800 15px 'Manrope', sans-serif; color: #fff; text-align: center; }
+  .kds-empty { color: oklch(65% 0.02 60); font: 600 12px 'Manrope', sans-serif; }
+  .kds-foot { color: oklch(65% 0.02 60); font: 500 11px 'Manrope', sans-serif; }
+  .exit-link { color: oklch(75% 0.02 60); font: 700 11px ui-monospace, monospace; text-decoration: none; }
+  @media (max-width: 900px) { .kds-cols { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="kds-shell">
+  <div class="kds-header">
+    <div class="title">Comandas en vivo</div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="anno">sonido: nueva comanda entrante</div>
+      <a class="exit-link" href="mesas.html">Salir</a>
+    </div>
+  </div>
+  <div class="kds-cols">
+    <div class="kds-col"><div class="kds-col-title" style="color:var(--kitchen-mesa)">Pendiente</div><div id="col-pendiente"></div></div>
+    <div class="kds-col"><div class="kds-col-title" style="color:var(--kitchen-llevar)">En preparación</div><div id="col-preparacion"></div></div>
+    <div class="kds-col"><div class="kds-col-title" style="color:var(--kitchen-domi)">Listo</div><div id="col-listo"></div></div>
+  </div>
+  <div class="kds-foot">Un toque grande sobre el botón avanza la comanda al siguiente estado · sin menús, sin arrastrar</div>
+</div>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/cocina.js"></script>
+</body>
+</html>

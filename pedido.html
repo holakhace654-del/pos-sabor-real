@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedido · Sabor Real</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .order-shell { display: flex; flex: 1; min-width: 0; gap: 0; position: relative; }
+  .order-main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .order-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .badges { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .cats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cat-pill { padding: 8px 16px; font: 700 11.5px 'Manrope', sans-serif; border-radius: 100px; background: var(--ghost-bg); color: var(--ghost-text); cursor: pointer; border: none; }
+  .cat-pill.active { background: var(--accent); color: #fff; }
+
+  .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .prod-card { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; background: #fff; transition: transform .15s; }
+  .prod-card:hover { transform: scale(1.02); }
+  .prod-card:active { transform: scale(0.98); }
+  .prod-card .ph-photo { height: 84px; }
+  .prod-card.disabled { opacity: .5; cursor: not-allowed; }
+  .prod-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .prod-name { font: 700 12.5px 'Manrope', sans-serif; }
+  .prod-price { font: 800 13px 'Manrope', sans-serif; color: var(--accent-soft-tx); }
+
+  .cart-panel {
+    width: 300px; flex: none; background: var(--panel-bg); padding: 18px;
+    display: flex; flex-direction: column; gap: 12px; border-left: 1px solid var(--border);
+  }
+  .cart-head { display: flex; justify-content: space-between; align-items: center; }
+  .cart-items { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; max-height: 46vh; }
+  .cart-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+  .cart-item-name { font: 700 12px 'Manrope', sans-serif; }
+  .cart-item-note { font: 500 10.5px 'Manrope', sans-serif; color: var(--text-dim); }
+  .qty-btn { width: 22px; height: 22px; border-radius: 6px; background: #fff; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; font: 700 12px 'Manrope', sans-serif; cursor: pointer; }
+  .cart-total-row { border-top: 1px dashed var(--border-dash); padding-top: 10px; display: flex; justify-content: space-between; }
+  .cart-empty { font: 500 12px 'Manrope', sans-serif; color: var(--text-dim); text-align: center; padding: 20px 0; }
+
+  .modal-backdrop { position: fixed; inset: 0; background: oklch(23% 0.02 50 / 0.35); display: none; align-items: center; justify-content: center; z-index: 50; }
+  .modal-backdrop.open { display: flex; }
+  .modifier-modal {
+    width: 320px; max-width: calc(100vw - 32px); background: #fff; border-radius: 18px; box-shadow: var(--shadow-pop);
+    border: 1px solid var(--border); padding: 18px; display: flex; flex-direction: column; gap: 12px; max-height: 82vh; overflow-y: auto;
+  }
+  .mod-group-name { font: 700 11px 'Manrope', sans-serif; color: var(--text-dim); }
+  .mod-option { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 10px; background: var(--panel-bg); font: 600 11.5px 'Manrope', sans-serif; cursor: pointer; }
+  .mod-option.selected { background: var(--accent-soft); }
+  .mod-check { width: 14px; height: 14px; border: 2px solid var(--accent); flex: none; }
+  .mod-check.radio { border-radius: 50%; }
+  .mod-check.checkbox { border-radius: 4px; }
+  .mod-check.filled { background: var(--accent); }
+  .qty-stepper { display: flex; align-items: center; gap: 12px; justify-content: center; }
+  .qty-stepper .qty-btn { width: 32px; height: 32px; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <div id="sidebar-root"></div>
+  <div class="order-shell">
+    <div class="order-main">
+      <div class="order-head">
+        <div class="badges" id="badges"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost" id="btn-notas">Notas de pedido</button>
+          <button class="btn btn-primary" id="btn-cobrar">Cobrar</button>
+        </div>
+      </div>
+      <div class="cats" id="cats"></div>
+      <div class="prod-grid" id="prod-grid"></div>
+    </div>
+
+    <div class="cart-panel">
+      <div class="cart-head">
+        <div style="font:800 14px 'Manrope',sans-serif">Pedido actual</div>
+        <div class="pill" id="cart-count" style="background:var(--accent);color:#fff">0</div>
+      </div>
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-total-row">
+        <div style="font:700 13px 'Manrope',sans-serif">Total</div>
+        <div style="font:800 15px 'Manrope',sans-serif" id="cart-total">$0</div>
+      </div>
+      <button class="btn btn-primary btn-block" id="btn-enviar">Enviar a cocina</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modifier-modal" id="modifier-modal"></div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/pedido.js"></script>
+</body>
+</html>

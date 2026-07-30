@@ -1,0 +1,10 @@
+# Fotos de productos subidas en tiempo de ejecución (no versionadas)
+uploads/productos/*
+!uploads/productos/.gitkeep
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Credenciales locales si alguna vez se separan de config.php
+config/local.php

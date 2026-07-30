@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usuarios · Sabor Real</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .user-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 14px; background: var(--row-bg); }
+  .perm-table { display: grid; grid-template-columns: 1.2fr repeat(7, 0.8fr); gap: 8px; align-items: center; }
+  .perm-head { font: 700 10px ui-monospace, monospace; color: var(--text-dim); text-align: center; }
+  .perm-check { width: 26px; height: 26px; border-radius: 8px; margin: 0 auto; display: flex; align-items: center; justify-content: center; cursor: pointer; font: 800 13px 'Manrope', sans-serif; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <div id="sidebar-root"></div>
+  <div class="main">
+    <div class="main-header">
+      <div class="main-title">Equipo</div>
+      <button class="btn btn-primary" id="btn-nuevo">+ Usuario</button>
+    </div>
+    <div id="usuarios" style="display:flex;flex-direction:column;gap:10px"></div>
+
+    <div style="font:800 14px 'Manrope',sans-serif;margin-top:10px">Permisos por rol</div>
+    <div class="perm-table" id="perm-table"></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="card form-card pop-in" style="width:380px">
+    <div style="font:800 16px 'Manrope',sans-serif" id="modal-title">Usuario</div>
+    <input class="input" id="f-nombre" placeholder="Nombre completo">
+    <div class="form-row">
+      <input class="input" id="f-iniciales" placeholder="Iniciales (ej: CP)" maxlength="4">
+      <select class="input" id="f-rol">
+        <option value="administrador">Administrador</option>
+        <option value="cajero">Cajero</option>
+        <option value="mesero">Mesero</option>
+        <option value="domiciliario">Domiciliario</option>
+      </select>
+    </div>
+    <input class="input" id="f-pin" placeholder="PIN (4 dígitos, dejar vacío para no cambiar)" maxlength="4">
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost" id="btn-cancelar" style="flex:1">Cancelar</button>
+      <button class="btn btn-primary" id="btn-guardar" style="flex:2">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/sounds.js"></script>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/usuarios.js"></script>
+</body>
+</html>
