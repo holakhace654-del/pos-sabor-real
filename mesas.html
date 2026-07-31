@@ -7,21 +7,38 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=2">
 <style>
   .toolbar { display: flex; gap: 10px; }
   .legend { display: flex; gap: 14px; flex-wrap: wrap; }
   .zone-title { font: 700 11px ui-monospace, monospace; color: var(--text-dim); text-transform: uppercase; margin-top: 6px; }
   .tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
   .table-card {
+    position: relative;
     border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px;
     border: 1px solid var(--border); cursor: pointer; transition: transform .12s;
   }
   .table-card:active { transform: scale(0.97); }
-  .table-head { display: flex; justify-content: space-between; }
+  .table-head { display: flex; justify-content: space-between; align-items: flex-start; }
   .table-name { font: 800 15px 'Manrope', sans-serif; }
   .table-seats { font: 600 10px ui-monospace, monospace; }
   .table-meta { font: 600 10px ui-monospace, monospace; color: var(--text-dim); }
+  .table-menu-btn {
+    width: 22px; height: 22px; border-radius: 6px; border: none; background: oklch(100% 0 0 / 0.5);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; font: 800 12px monospace;
+    color: var(--text-dim); flex: none;
+  }
+  .table-menu-btn:hover { background: #fff; }
+  .table-menu {
+    position: absolute; top: 40px; right: 10px; z-index: 20; background: #fff; border: 1px solid var(--border);
+    border-radius: 12px; box-shadow: var(--shadow-pop); padding: 6px; display: none; flex-direction: column; gap: 2px; min-width: 140px;
+  }
+  .table-menu.open { display: flex; }
+  .table-menu button {
+    text-align: left; border: none; background: none; padding: 8px 10px; border-radius: 8px; cursor: pointer;
+    font: 600 12px 'Manrope', sans-serif; color: var(--text);
+  }
+  .table-menu button:hover { background: var(--ghost-bg); }
   .quick-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 520px; }
   .quick-card { border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px; cursor: pointer; border: none; text-align: left; }
   .quick-card .qc-title { font: 800 14px 'Manrope', sans-serif; }
@@ -62,9 +79,9 @@
   </div>
 </div>
 
-<script src="assets/js/api.js"></script>
-<script src="assets/js/sounds.js"></script>
-<script src="assets/js/layout.js"></script>
-<script src="assets/js/mesas.js"></script>
+<script src="assets/js/api.js?v=2"></script>
+<script src="assets/js/sounds.js?v=2"></script>
+<script src="assets/js/layout.js?v=2"></script>
+<script src="assets/js/mesas.js?v=2"></script>
 </body>
 </html>

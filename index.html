@@ -7,9 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=2">
 <style>
-  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 100vh; }
+  .demo-banner {
+    padding: 8px 16px; border-radius: 100px; background: var(--warn-bg); color: var(--warn-text);
+    font: 600 11.5px 'Manrope', sans-serif;
+  }
   .login-card {
     width: 420px; max-width: calc(100vw - 32px); padding: 36px 32px;
     display: flex; flex-direction: column; gap: 22px; align-items: center;
@@ -74,8 +78,11 @@
   </div>
 </div>
 
-<script src="assets/js/api.js"></script>
-<script src="assets/js/sounds.js"></script>
-<script src="assets/js/login.js"></script>
+<!-- Aviso de demostración: borra este bloque cuando el sistema pase a uso real -->
+<div class="demo-banner">Modo demostración · PIN administrador (María Torres): <strong>1111</strong></div>
+
+<script src="assets/js/api.js?v=2"></script>
+<script src="assets/js/sounds.js?v=2"></script>
+<script src="assets/js/login.js?v=2"></script>
 </body>
 </html>

@@ -165,7 +165,7 @@ function renderCart() {
     row.className = 'cart-item pop-in';
     row.innerHTML = `
       <div>
-        <div class="cart-item-name">${it.nombre_producto}</div>
+        <div class="cart-item-name">${it.nombre_producto} ${it.comanda_id ? '' : '<span class="pill" style="background:var(--warn-bg);color:var(--warn-text);margin-left:4px">sin enviar</span>'}</div>
         <div class="cart-item-note">${it.nota_completa || ''}</div>
       </div>
       <div style="display:flex;align-items:center;gap:6px">
@@ -178,6 +178,11 @@ function renderCart() {
     });
     cartItemsEl.appendChild(row);
   });
+
+  const sinEnviar = pedido.items.filter(it => !it.comanda_id).length;
+  const btnEnviar = document.getElementById('btn-enviar');
+  btnEnviar.textContent = sinEnviar ? `Enviar a cocina (${sinEnviar})` : 'Todo enviado a cocina';
+  btnEnviar.disabled = sinEnviar === 0;
 }
 
 async function updateQty(item, delta) {
@@ -197,6 +202,7 @@ document.getElementById('btn-enviar').addEventListener('click', async () => {
     pedido = res.pedido;
     Sounds.newTicket();
     toast('Pedido enviado a cocina');
+    renderCart();
   } catch (e) { toast(e.message); }
 });
 

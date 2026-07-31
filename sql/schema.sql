@@ -159,17 +159,30 @@ CREATE TABLE IF NOT EXISTS pedidos (
   FOREIGN KEY (caja_turno_id) REFERENCES caja_turnos(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Cada "Enviar a cocina" crea una comanda nueva solo con los productos
+-- todavía no enviados. Así, si una mesa ya tiene ítems listos y pide algo
+-- más, la nueva comanda no revive los ítems anteriores en Pendiente.
+CREATE TABLE IF NOT EXISTS comandas (
+  id                INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  pedido_id         INT UNSIGNED NOT NULL,
+  estado            ENUM('pendiente','preparacion','listo') NOT NULL DEFAULT 'pendiente',
+  creado_en         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS pedido_items (
   id                INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   pedido_id         INT UNSIGNED NOT NULL,
   producto_id       INT UNSIGNED NOT NULL,
+  comanda_id        INT UNSIGNED NULL, -- NULL = agregado al carrito pero aún no enviado a cocina
   nombre_producto   VARCHAR(120) NOT NULL, -- snapshot
   cantidad          SMALLINT UNSIGNED NOT NULL DEFAULT 1,
   precio_unitario   INT UNSIGNED NOT NULL, -- snapshot incl. modificadores
   nota              VARCHAR(255) NULL,
   subtotal          INT UNSIGNED NOT NULL,
   FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
-  FOREIGN KEY (producto_id) REFERENCES productos(id)
+  FOREIGN KEY (producto_id) REFERENCES productos(id),
+  FOREIGN KEY (comanda_id) REFERENCES comandas(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS pedido_item_modificadores (

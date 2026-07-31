@@ -29,10 +29,10 @@ function renderTicket(c) {
   return el;
 }
 
-async function avanzar(pedidoId) {
+async function avanzar(comandaId) {
   Sounds.tap();
   try {
-    await Api.post('/api/cocina.php?action=avanzar', { pedido_id: pedidoId });
+    await Api.post('/api/cocina.php?action=avanzar', { comanda_id: comandaId });
     cargar(true);
   } catch (e) { toast(e.message); }
 }

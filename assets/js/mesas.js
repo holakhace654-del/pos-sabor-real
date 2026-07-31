@@ -19,6 +19,8 @@ async function loadZonas() {
   });
 }
 
+const ESTADOS_MESA = ['libre', 'ocupada', 'cuenta', 'reservada'];
+
 function renderTable(m) {
   const el = document.createElement('div');
   el.className = `table-card status-${m.estado}`;
@@ -29,16 +31,48 @@ function renderTable(m) {
   el.innerHTML = `
     <div class="table-head">
       <div class="table-name">${m.nombre}</div>
-      <div class="table-seats">${m.puestos}p</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="table-seats">${m.puestos}p</div>
+        <button type="button" class="table-menu-btn" data-menu-toggle>⋮</button>
+      </div>
     </div>
     <div class="pill pill-${m.estado}">${labelEstado(m.estado)}</div>
-    <div class="table-meta">${metaLabel}</div>`;
+    <div class="table-meta">${metaLabel}</div>
+    <div class="table-menu" data-menu>
+      ${ESTADOS_MESA.map(e => `<button type="button" data-set-estado="${e}">Marcar ${labelEstado(e)}</button>`).join('')}
+    </div>`;
+
   el.addEventListener('click', () => abrirMesa(m.id));
+
+  const menuBtn = el.querySelector('[data-menu-toggle]');
+  const menu = el.querySelector('[data-menu]');
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('.table-menu.open').forEach(x => { if (x !== menu) x.classList.remove('open'); });
+    menu.classList.toggle('open');
+  });
+  menu.addEventListener('click', (e) => e.stopPropagation());
+  menu.querySelectorAll('[data-set-estado]').forEach(btn => {
+    btn.addEventListener('click', () => cambiarEstadoMesa(m.id, btn.dataset.setEstado));
+  });
+
   return el;
 }
 
+document.addEventListener('click', () => {
+  document.querySelectorAll('.table-menu.open').forEach(x => x.classList.remove('open'));
+});
+
 function labelEstado(e) {
   return { libre: 'Libre', ocupada: 'Ocupada', cuenta: 'Cuenta pedida', reservada: 'Reservada' }[e] || e;
+}
+
+async function cambiarEstadoMesa(mesaId, estado) {
+  Sounds.tap();
+  try {
+    await Api.post('/api/mesas.php?action=cambiar_estado', { mesa_id: mesaId, estado });
+    loadZonas();
+  } catch (e) { toast(e.message); }
 }
 
 async function abrirMesa(mesaId) {

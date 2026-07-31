@@ -100,11 +100,22 @@ if (method() === 'POST' && $action === 'enviar_cocina') {
     require_auth();
     $b = body();
     $pedidoId = (int)($b['pedido_id'] ?? 0);
-    $count = db()->prepare('SELECT COUNT(*) FROM pedido_items WHERE pedido_id = ?');
-    $count->execute([$pedidoId]);
-    if (!$count->fetchColumn()) json_error('Agrega al menos un producto antes de enviar a cocina.');
 
-    db()->prepare("UPDATE pedidos SET enviado_cocina_en = COALESCE(enviado_cocina_en, NOW()), estado_cocina='pendiente' WHERE id=?")->execute([$pedidoId]);
+    // Solo los ítems sin comanda_id son "nuevos" (agregados desde el último envío)
+    $stmt = db()->prepare('SELECT id FROM pedido_items WHERE pedido_id = ? AND comanda_id IS NULL');
+    $stmt->execute([$pedidoId]);
+    $nuevos = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    if (!$nuevos) json_error('No hay productos nuevos para enviar a cocina.');
+
+    $pdo = db();
+    $pdo->beginTransaction();
+    $pdo->prepare("INSERT INTO comandas (pedido_id, estado) VALUES (?, 'pendiente')")->execute([$pedidoId]);
+    $comandaId = $pdo->lastInsertId();
+    $in = implode(',', array_fill(0, count($nuevos), '?'));
+    $pdo->prepare("UPDATE pedido_items SET comanda_id = ? WHERE id IN ($in)")->execute(array_merge([$comandaId], $nuevos));
+    $pdo->commit();
+
     json_ok(['pedido' => pedido_detalle($pedidoId)]);
 }
 

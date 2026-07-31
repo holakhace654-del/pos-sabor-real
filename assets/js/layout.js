@@ -6,7 +6,7 @@
  */
 const MODULOS = [
   { key: 'mesas',      label: 'Local',        href: 'mesas.html' },
-  { key: 'pedidos',    label: 'Pedidos',      href: 'pedido.html' },
+  { key: 'pedidos',    label: 'Pedidos',      href: 'mesas.html' },
   { key: 'domicilios', label: 'Domicilios',   href: 'domicilio.html' },
   { key: 'cocina',     label: 'Cocina',       href: 'cocina.html', modulo: 'pedidos' },
   { key: 'caja',       label: 'Caja',         href: 'caja.html' },

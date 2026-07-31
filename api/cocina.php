@@ -5,52 +5,57 @@ require_module('pedidos');
 $action = $_GET['action'] ?? '';
 
 if (method() === 'GET' && $action === 'comandas') {
-    $pedidos = db()->query("SELECT p.id, p.codigo, p.canal, p.estado_cocina, p.mesa_id,
-        TIMESTAMPDIFF(MINUTE, p.enviado_cocina_en, NOW()) AS minutos,
+    $comandas = db()->query("SELECT c.id, c.estado AS estado_cocina, c.pedido_id,
+        TIMESTAMPDIFF(MINUTE, c.creado_en, NOW()) AS minutos,
+        p.codigo, p.canal, p.mesa_id,
         m.nombre AS mesa_nombre
-        FROM pedidos p LEFT JOIN mesas m ON m.id = p.mesa_id
-        WHERE p.enviado_cocina_en IS NOT NULL AND p.estado_pago = 'abierto'
-        ORDER BY p.enviado_cocina_en ASC")->fetchAll();
+        FROM comandas c
+        JOIN pedidos p ON p.id = c.pedido_id
+        LEFT JOIN mesas m ON m.id = p.mesa_id
+        WHERE p.estado_pago = 'abierto'
+        ORDER BY c.creado_en ASC")->fetchAll();
 
-    if ($pedidos) {
-        $ids = array_column($pedidos, 'id');
+    if ($comandas) {
+        $ids = array_column($comandas, 'id');
         $in = implode(',', array_fill(0, count($ids), '?'));
-        $stmt = db()->prepare("SELECT pedido_id, nombre_producto, cantidad FROM pedido_items WHERE pedido_id IN ($in) ORDER BY id");
+        $stmt = db()->prepare("SELECT comanda_id, nombre_producto, cantidad FROM pedido_items WHERE comanda_id IN ($in) ORDER BY id");
         $stmt->execute($ids);
         $items = [];
-        foreach ($stmt->fetchAll() as $it) $items[$it['pedido_id']][] = $it;
+        foreach ($stmt->fetchAll() as $it) $items[$it['comanda_id']][] = $it;
     }
 
     $labels = ['mesa' => 'Mesa', 'para_llevar' => 'Para llevar', 'domicilio' => 'Domicilio'];
-    foreach ($pedidos as &$p) {
-        $p['ref'] = $p['canal'] === 'mesa' ? $p['mesa_nombre'] : $p['codigo'];
-        $p['type_label'] = $labels[$p['canal']] ?? $p['canal'];
-        $p['items'] = $items[$p['id']] ?? [];
+    foreach ($comandas as &$c) {
+        $c['ref'] = $c['canal'] === 'mesa' ? $c['mesa_nombre'] : $c['codigo'];
+        $c['type_label'] = $labels[$c['canal']] ?? $c['canal'];
+        $c['items'] = $items[$c['id']] ?? [];
     }
 
-    json_ok(['comandas' => $pedidos]);
+    json_ok(['comandas' => $comandas]);
 }
 
 if (method() === 'POST' && $action === 'avanzar') {
     $b = body();
-    $pedidoId = (int)($b['pedido_id'] ?? 0);
+    $comandaId = (int)($b['comanda_id'] ?? 0);
     $orden = ['pendiente', 'preparacion', 'listo'];
 
-    $stmt = db()->prepare('SELECT estado_cocina, canal, estado_domicilio FROM pedidos WHERE id = ?');
-    $stmt->execute([$pedidoId]);
-    $pedido = $stmt->fetch();
-    if (!$pedido) json_error('Pedido no encontrado.', 404);
+    $stmt = db()->prepare('SELECT c.estado, c.pedido_id, p.canal, p.estado_domicilio
+        FROM comandas c JOIN pedidos p ON p.id = c.pedido_id WHERE c.id = ?');
+    $stmt->execute([$comandaId]);
+    $comanda = $stmt->fetch();
+    if (!$comanda) json_error('Comanda no encontrada.', 404);
 
-    $idx = array_search($pedido['estado_cocina'], $orden, true);
+    $idx = array_search($comanda['estado'], $orden, true);
     if ($idx === false || $idx >= count($orden) - 1) json_error('La comanda ya está lista.');
     $siguiente = $orden[$idx + 1];
 
-    db()->prepare('UPDATE pedidos SET estado_cocina = ? WHERE id = ?')->execute([$siguiente, $pedidoId]);
+    db()->prepare('UPDATE comandas SET estado = ? WHERE id = ?')->execute([$siguiente, $comandaId]);
 
-    if ($siguiente === 'listo' && $pedido['canal'] === 'domicilio' && $pedido['estado_domicilio'] === 'preparacion') {
+    $pedidoId = $comanda['pedido_id'];
+    if ($siguiente === 'listo' && $comanda['canal'] === 'domicilio' && $comanda['estado_domicilio'] === 'preparacion') {
         db()->prepare("UPDATE pedidos SET estado_domicilio = 'listo_despacho' WHERE id = ?")->execute([$pedidoId]);
     }
-    if ($pedido['canal'] === 'domicilio' && $pedido['estado_domicilio'] === 'recibido') {
+    if ($comanda['canal'] === 'domicilio' && $comanda['estado_domicilio'] === 'recibido') {
         db()->prepare("UPDATE pedidos SET estado_domicilio = 'preparacion' WHERE id = ?")->execute([$pedidoId]);
     }
 

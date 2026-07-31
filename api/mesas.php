@@ -62,4 +62,35 @@ if (method() === 'POST' && $action === 'para_llevar') {
     json_ok(['pedido_id' => (int)db()->lastInsertId()]);
 }
 
+/** Cambia el estado de una mesa manualmente (uso administrativo) */
+if (method() === 'POST' && $action === 'cambiar_estado') {
+    require_role(['administrador', 'cajero']);
+    $b = body();
+    $mesaId = (int)($b['mesa_id'] ?? 0);
+    $estado = $b['estado'] ?? '';
+    $estadosValidos = ['libre', 'ocupada', 'cuenta', 'reservada'];
+    if (!$mesaId || !in_array($estado, $estadosValidos, true)) json_error('Mesa o estado inválido.');
+
+    $pedidoAbierto = db()->prepare("SELECT id FROM pedidos WHERE mesa_id = ? AND estado_pago = 'abierto'");
+    $pedidoAbierto->execute([$mesaId]);
+    $pedidoId = $pedidoAbierto->fetchColumn();
+
+    if ($estado === 'libre') {
+        // Liberar la mesa a mano anula el pedido abierto si lo hay (ej: pedido creado por error)
+        if ($pedidoId) {
+            db()->prepare("UPDATE pedidos SET estado_pago = 'anulado' WHERE id = ?")->execute([$pedidoId]);
+        }
+        db()->prepare("UPDATE mesas SET estado='libre', ocupada_desde=NULL WHERE id=?")->execute([$mesaId]);
+    } elseif ($estado === 'reservada') {
+        if ($pedidoId) json_error('No puedes reservar una mesa con un pedido abierto. Libérala primero.');
+        db()->prepare("UPDATE mesas SET estado='reservada', ocupada_desde=NULL WHERE id=?")->execute([$mesaId]);
+    } elseif ($estado === 'ocupada') {
+        db()->prepare("UPDATE mesas SET estado='ocupada', ocupada_desde=COALESCE(ocupada_desde, NOW()) WHERE id=?")->execute([$mesaId]);
+    } else { // cuenta
+        db()->prepare("UPDATE mesas SET estado='cuenta' WHERE id=?")->execute([$mesaId]);
+    }
+
+    json_ok([]);
+}
+
 json_error('Acción no encontrada.', 404);
